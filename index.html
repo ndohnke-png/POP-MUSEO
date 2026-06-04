@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Ariana Grande XR Museum - Reset Cam</title>
+    <title>Ariana Grande XR Museum - Hard Reset</title>
+    <!-- Cargamos UNICAMENTE la librería base de A-Frame, sin ningún agregado raro -->
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
   </head>
   <body>
+    
     <a-scene>
       
       <a-assets>
@@ -29,19 +30,16 @@
       <!-- MESA CENTRAL -->
       <a-box position="0 0.5 -3.5" width="2" height="0.6" depth="1" color="#1c1c24"></a-box>
 
-      <!-- ASSET: Tu modelo 3D fijo -->
+      <!-- ASSET: Tu modelo 3D totalmente fijo -->
       <a-gltf-model src="#disco-tun" 
                     position="0 0.9 -3.5" 
                     scale="1 1 1"
                     id="vinilo-interactivo">
       </a-gltf-model>
 
-      <!-- JUGADOR RESETEADO: Separamos look-controls para frenar el bug de rotación -->
-      <a-entity id="rig" position="0 0 0" movement-controls="controls: keyboard; speed: 0.15">
-        <a-entity camera position="0 1.6 0" look-controls="pointerLockEnabled: false"></a-entity>
-        <a-entity laser-controls="hand: left"></a-entity>
-        <a-entity laser-controls="hand: right"></a-entity>
-      </a-entity>
+      <!-- CÁMARA ULTRA BÁSICA RESETEADA -->
+      <!-- Sin scripts externos. Se mueve con WASD / Flechas y el mouse haciendo arrastre normal -->
+      <a-camera position="0 1.6 0"></a-camera>
 
     </a-scene>
   </body>
