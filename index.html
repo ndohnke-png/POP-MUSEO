@@ -1,50 +1,72 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Ariana Grande XR Museum</title>
-    <!-- Esto carga la librería de A-Frame para que la web entienda el 3D -->
+    <title>Ariana Grande XR Museum - Interactive</title>
+    <!-- Componentes base de A-Frame -->
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <!-- Librería para poder caminar con los joysticks (aframe-extras) -->
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
+    <!-- Librería para interactuar y agarrar cosas (super-hands) -->
+    <script src="https://unpkg.com/super-hands@3.0.4/dist/super-hands.min.js"></script>
+    <!-- Sistema de físicas para que los objetos no floten en la nada al soltarlos -->
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-physics-system@v4.2.2/dist/aframe-physics-system.min.js"></script>
   </head>
   <body>
-    <!-- <a-scene> es el escenario donde pasa toda la magia -->
-    <a-scene>
+    <!-- Añadimos físicas a la escena para el agarre de objetos -->
+    <a-scene physics="driver: local; gravity: 0; debug: false">
+      
       <a-assets>
-      <a-asset-item id="disco-tun" src="thank u, next.glb"></a-asset-item>
+        <!-- Tu modelo 3D registrado -->
+        <a-asset-item id="disco-tun" src="thank u, next.glb"></a-asset-item>
       </a-assets>
-
-      <!-- 1. EL FONDO: Un cielo nocturno estrellado -->
+      
+      <!-- EL FONDO Y EL PISO -->
       <a-sky color="#0a0512"></a-sky>
+      <!-- El piso tiene física estática para que los vinilos no se caigan al infinito -->
+      <a-plane static-body position="0 0 0" rotation="-90 0 0" width="20" height="20" color="#111116"></a-plane>
 
-      <!-- 2. EL PISO: Una base oscura y elegante para caminar -->
-      <a-plane position="0 0 0" rotation="-90 0 0" width="20" height="20" color="#111116"></a-plane>
-
-      <!-- 3. LAS LUCES: Una luz ambiente púrpura y un neón rosa fuerte (Estética Dangerous Woman) -->
+      <!-- LAS LUCES -->
       <a-light type="ambient" color="#3c1053" intensity="1.5"></a-light>
       <a-light type="point" color="#ff007f" intensity="2" position="0 4 -3"></a-light>
 
-      <!-- 4. CARTEL DE BIENVENIDA -->
+      <!-- CARTEL DE BIENVENIDA -->
       <a-text value="ARIANA GRANDE MUSEUM" position="-2 3.5 -4" color="#ffffff" width="6"></a-text>
       <a-text value="Dangerous Woman Era" position="-1.2 3 -4" color="#ff007f" width="4"></a-text>
 
-      <!-- 5. VITRINAS PRINCIPALES (Cajas oscuras donde irán tus cosas de Blender) -->
-      <!-- Vitrina Izquierda -->
-      <a-box position="-2.5 1.5 -4" width="1.5" height="2.5" depth="0.5" color="#1c1c24">
-        <!-- Cilindro rosa adentro que simula el stand para la máscara de conejo -->
-        <a-cylinder position="0 -0.4 0.3" radius="0.15" height="0.8" color="#ff007f"></a-cylinder>
-      </a-box>
+      <!-- MESA CENTRAL (Donde apoyamos los vinilos) -->
+      <a-box static-body position="0 0.5 -2.5" width="2" height="0.6" depth="1" color="#1c1c24"></a-box>
 
-      <!-- Vitrina Derecha -->
-      <a-box position="2.5 1.5 -4" width="1.5" height="2.5" depth="0.5" color="#1c1c24">
-        <!-- Un cono que simula el maniquí para los vestidos icónicos -->
-        <a-cone position="0 -0.2 0.3" radius-bottom="0.2" radius-top="0.05" height="1" color="#ffffff"></a-cone>
-      </a-box>
-      ```html
-     <!-- Tu modelo de Blender posicionado en el centro del museo -->
-     <a-gltf-model src="#disco-tun" position="0 1.5 -3" scale="1 1 1"></a-gltf-model>
+      <!-- ASSET INTERACTIVO: Tu vinilo de Blender que se puede AGARRAR -->
+      <!-- 'grabbable' permite agarrarlo; 'dynamic-body' le da físicas al objeto -->
+      <a-gltf-model src="#disco-tun" 
+                    position="0 0.9 -2.5" 
+                    scale="1 1 1"
+                    grabbable
+                    dynamic-body="mass: 1"
+                    animation="property: rotation; to: 0 360 0; loop: true; dur: 6000; easing: linear; startEvents: sleep"
+                    id="vinilo-interactivo">
+      </a-gltf-model>
 
-      <!-- 6. LA CAMÁRA: Desde donde mira el usuario -->
-      <a-entity position="0 1.6 0">
-        <a-camera></a-camera>
+      <!-- VITRINAS DECORATIVAS -->
+      <a-box position="-2.5 1.5 -4" width="1.5" height="2.5" depth="0.5" color="#1c1c24"></a-box>
+      <a-box position="2.5 1.5 -4" width="1.5" height="2.5" depth="0.5" color="#1c1c24"></a-box>
+
+      <!-- JUGADOR: SISTEMA DE CAMINATA Y MANOS PARA META QUEST -->
+      <!-- 'movement-controls' habilita las palancas del Quest para moverte y rotar -->
+      <a-entity id="rig" movement-controls="controls: gamepad, keyboard; speed: 0.15">
+        <a-entity camera position="0 1.6 0" look-controls></a-entity>
+        
+        <!-- Mano Izquierda (Control de Quest) -->
+        <a-entity id="leftHand" 
+                  laser-controls="hand: left" 
+                  super-hands="colliderEvent: raycaster-intersection; colliderEventProperty: els; colliderEndEvent: raycaster-intersection-cleared; colliderEndEventProperty: clearedEls">
+        </a-entity>
+        
+        <!-- Mano Derecha (Control de Quest) -->
+        <a-entity id="rightHand" 
+                  laser-controls="hand: right" 
+                  super-hands="colliderEvent: raycaster-intersection; colliderEventProperty: els; colliderEndEvent: raycaster-intersection-cleared; colliderEndEventProperty: clearedEls">
+        </a-entity>
       </a-entity>
 
     </a-scene>
