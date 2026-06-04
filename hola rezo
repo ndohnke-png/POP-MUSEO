@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Ariana Grande XR Museum</title>
+    <!-- Esto carga la librería de A-Frame para que la web entienda el 3D -->
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  </head>
+  <body>
+    <!-- <a-scene> es el escenario donde pasa toda la magia -->
+    <a-scene>
+      
+      <!-- 1. EL FONDO: Un cielo nocturno estrellado -->
+      <a-sky color="#0a0512"></a-sky>
+
+      <!-- 2. EL PISO: Una base oscura y elegante para caminar -->
+      <a-plane position="0 0 0" rotation="-90 0 0" width="20" height="20" color="#111116"></a-plane>
+
+      <!-- 3. LAS LUCES: Una luz ambiente púrpura y un neón rosa fuerte (Estética Dangerous Woman) -->
+      <a-light type="ambient" color="#3c1053" intensity="1.5"></a-light>
+      <a-light type="point" color="#ff007f" intensity="2" position="0 4 -3"></a-light>
+
+      <!-- 4. CARTEL DE BIENVENIDA -->
+      <a-text value="ARIANA GRANDE MUSEUM" position="-2 3.5 -4" color="#ffffff" width="6"></a-text>
+      <a-text value="Dangerous Woman Era" position="-1.2 3 -4" color="#ff007f" width="4"></a-text>
+
+      <!-- 5. VITRINAS PRINCIPALES (Cajas oscuras donde irán tus cosas de Blender) -->
+      <!-- Vitrina Izquierda -->
+      <a-box position="-2.5 1.5 -4" width="1.5" height="2.5" depth="0.5" color="#1c1c24">
+        <!-- Cilindro rosa adentro que simula el stand para la máscara de conejo -->
+        <a-cylinder position="0 -0.4 0.3" radius="0.15" height="0.8" color="#ff007f"></a-cylinder>
+      </a-box>
+
+      <!-- Vitrina Derecha -->
+      <a-box position="2.5 1.5 -4" width="1.5" height="2.5" depth="0.5" color="#1c1c24">
+        <!-- Un cono que simula el maniquí para los vestidos icónicos -->
+        <a-cone position="0 -0.2 0.3" radius-bottom="0.2" radius-top="0.05" height="1" color="#ffffff"></a-cone>
+      </a-box>
+
+      <!-- 6. LA CAMÁRA: Desde donde mira el usuario -->
+      <a-entity position="0 1.6 0">
+        <a-camera></a-camera>
+      </a-entity>
+
+    </a-scene>
+  </body>
+</html>
