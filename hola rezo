@@ -8,7 +8,10 @@
   <body>
     <!-- <a-scene> es el escenario donde pasa toda la magia -->
     <a-scene>
-      
+      <a-assets>
+      <a-asset-item id="disco-tun" src="thank u, next.glb"></a-asset-item>
+      </a-assets>
+
       <!-- 1. EL FONDO: Un cielo nocturno estrellado -->
       <a-sky color="#0a0512"></a-sky>
 
@@ -35,6 +38,9 @@
         <!-- Un cono que simula el maniquí para los vestidos icónicos -->
         <a-cone position="0 -0.2 0.3" radius-bottom="0.2" radius-top="0.05" height="1" color="#ffffff"></a-cone>
       </a-box>
+      ```html
+     <!-- Tu modelo de Blender posicionado en el centro del museo -->
+     <a-gltf-model src="#disco-tun" position="0 1.5 -3" scale="1 1 1"></a-gltf-model>
 
       <!-- 6. LA CAMÁRA: Desde donde mira el usuario -->
       <a-entity position="0 1.6 0">
